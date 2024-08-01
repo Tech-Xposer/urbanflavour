@@ -1,113 +1,163 @@
+"use client";
+
 import Image from "next/image";
+import Link from "next/link";
+import { useContext, useEffect, useState } from "react";
+
+import Accordion from "../components/Accordion";
+
+import img from "../assets/Recipe book-pana.png";
+import bg from "../assets/Recipe book-bro.png";
+import RecipeCard from "@/components/RecipeCard";
+import Head from "next/head";
 
 export default function Home() {
-  return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.js</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:h-auto lg:w-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
 
-      <div className="relative flex place-items-center before:absolute before:h-[300px] before:w-full sm:before:w-[480px] before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full sm:after:w-[240px] after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 before:lg:h-[360px] z-[-1]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
+	const [recipes, setRecipes] = useState([]);
 
-      <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
+	
+	useEffect(() => {
+		getPopularRecipes();
+	}, []);
 
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800 hover:dark:bg-opacity-30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
+	const getPopularRecipes = async () => {
+		try {
+			const response = await fetch("/api/v1/recipes/popular?limit=6");
+			if (!response.ok) {
+				throw new Error("Network response was not ok");
+			}
+			const data = await response.json();
+			setRecipes(data.data);
+		} catch (error) {
+			console.error("Error fetching recipes:", error);
+		}
+	};
 
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50`}>
-            Explore starter templates for Next.js.
-          </p>
-        </a>
+	return (
+		<>
+			<Head>
+				<title>Urban Flavour - Home</title>
+				<meta
+					name="description"
+					content="Welcome to Urban Flavour, your go-to source for delicious and diverse food recipes."
+				/>
+				<meta property="og:title" content="Urban Flavour - Home" />
+				<meta
+					property="og:description"
+					content="Welcome to Urban Flavour, your go-to source for delicious and diverse food recipes."
+				/>
+				<meta property="og:image" content="/favicon-32x32.png" />
+				{/* Adjust as needed */}
+				<meta
+					property="og:url"
+					content="https://urbanflavour.codewithash.blog"
+				/>
+				<meta name="twitter:card" content="summary_large_image" />
+			</Head>
+			<div className="bg-amber-50 min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
+				<div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:gap-24">
+					<Image
+						src={img}
+						alt="Recipe book"
+						width={700}
+						height={700}
+						className="mt-8 lg:mt-0"
+					/>
+					<section className="text-left lg:mr-8">
+						<h1 className="text-5xl font-bold gradient-text">
+							Urban Flavour - <br /> Where Taste Meets Trend
+						</h1>
+						<p className="mt-4 text-lg text-gray-700 max-w-md">
+							Join a community of urban food lovers and share your own culinary
+							creations, tips, and experiences.
+						</p>
+						<div className="mt-6 flex">
+							<button
+								className="bg-orange-400 text-white font-semibold py-2 px-4 rounded-lg mr-4 hover:scale-105 hover:shadow-2xl hover:shadow-orange-500 transition-transform">
+								How to Contribute?
+							</button>
+							<Link href="/recipes">
+								<button className="bg-[#F7B104] text-white font-semibold py-2 px-4 rounded-lg hover:scale-105 hover:shadow-2xl hover:shadow-yellow-300 transition-transform">
+									Explore Recipes
+								</button>
+							</Link>
+						</div>
+					</section>
+				</div>
 
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className={`mb-3 text-2xl font-semibold`}>
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className={`m-0 max-w-[30ch] text-sm opacity-50 text-balance`}>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+
+				<div className="py-16">
+					<h2 className="text-3xl font-bold text-center mb-8">
+						Featured Recipes
+					</h2>
+
+					<div className="container mx-auto grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+						{recipes.length === 0 ? (
+							<div className="col-span-full text-center text-gray-700">
+								No recipes found.
+							</div>
+						) : (
+							recipes.map((recipe) => (
+								<RecipeCard
+									key={recipe._id}
+									recipe={recipe.recipeInfo}
+									rating={recipe.averageRating}
+								/>
+							))
+						)}
+					</div>
+				</div>
+
+				<div className="flex flex-col xl:flex-row">
+					<div className="flex flex-col xl:flex-row">
+						<div
+							className="relative h-screen bg-cover bg-center"
+							style={{ backgroundImage: `url(${bg})` }}>
+							<div className="absolute inset-0 bg-black opacity-50"></div>
+							<div className="relative z-10 flex flex-col items-center justify-center h-full text-center text-white">
+								<h1 className="text-5xl font-bold mb-4">
+									Welcome to Urban Flavour
+								</h1>
+								<p className="text-lg mb-8">
+									Discover and share amazing recipes from around the world.
+								</p>
+								<button className="px-6 py-3 bg-yellow-500 rounded-full font-semibold hover:bg-yellow-600 transition">
+									Get Started
+								</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div className="max-w-2xl mx-auto">
+					<h2 className="text-3xl font-bold text-center mb-4">
+						Frequently Asked Questions
+					</h2>
+					<p className="text-lg text-center text-gray-600 mb-8">
+						Here are some common questions about Urban Flavour
+					</p>
+					<Accordion
+						title="What is Urban Flavour?"
+						content="Urban Flavour is a platform that provides a diverse range of food recipes catering to various tastes and occasions. Our goal is to inspire and help home cooks of all skill levels to create delicious meals."
+					/>
+					<Accordion
+						title="How can I contribute a recipe?"
+						content="You can contribute a recipe by joining our community and submitting your recipe through our contribution form. We welcome recipes from all culinary backgrounds."
+					/>
+					<Accordion
+						title="What types of recipes are available?"
+						content="Our platform offers a wide range of recipes, from quick weeknight dinners to elaborate holiday feasts. We cater to various dietary preferences and cuisines."
+					/>
+					<Accordion
+						title="Can I share my recipes with others?"
+						content="Yes, you can share your recipes with others. Our community is open and welcoming. We encourage you to join our community and share your creations with others."
+					/>
+					<Accordion
+						title="What if I don't like a recipe?"
+						content="If you don't like a recipe, you can report it. We appreciate your feedback and help improve our community. We value your feedback and suggestions."
+					/>
+				</div>
+			</div>
+		</>
+	);
 }
