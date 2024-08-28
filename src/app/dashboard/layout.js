@@ -1,14 +1,19 @@
-"use client"
-import SideBar from "@/components/sideBar";
-
-import React from "react";
+"use client";
+import SideBar, { SidebarContext } from "@/components/sideBar";
+import { useState } from "react";
 
 const DashboardLayout = ({ children }) => {
+	const [expanded, setExpanded] = useState(true);
+
 	return (
-		<div className="flex">
-			<SideBar />
-			<main className="flex-1 p-6 md:ml-64">{children}</main>
-		</div>
+		<SidebarContext.Provider value={{ expanded, setExpanded }}>
+			<div className="flex">
+				<SideBar />
+				<main className={`flex-1 p-6 transition-all ${expanded ? 'ml-64' : 'ml-20'}`}>
+					{children}
+				</main>
+			</div>
+		</SidebarContext.Provider>
 	);
 };
 

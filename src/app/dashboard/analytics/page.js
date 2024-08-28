@@ -1,7 +1,18 @@
-import React from "react";
+"use client";
 
-const Analytics = () => {
-	return <div>Analytics</div>;
-};
+import { CustomBarChart } from "@/components/BarChart";
+import CustomPieChart from "@/components/PieChart";
 
-export default Analytics;
+export default function Analytics() {
+  
+	return (
+		<div className="flex items-center justify-between">
+			<div className="">
+				<CustomPieChart />
+			</div>
+			<div className="">
+				<CustomBarChart />
+			</div>
+		</div>
+	);
+}

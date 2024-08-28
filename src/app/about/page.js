@@ -1,27 +1,6 @@
-import Head from "next/head";
-
 const About = () => {
 	return (
 		<>
-			<Head>
-				<title>Urban Flavour - About Us</title>
-				<meta
-					name="description"
-					content="Learn more about Urban Flavour, our mission, and the team behind the delicious recipes."
-				/>
-				<meta property="og:title" content="Urban Flavour - About Us" />
-				<meta
-					property="og:description"
-					content="Learn more about Urban Flavour, our mission, and the team behind the delicious recipes."
-				/>
-				<meta property="og:image" content="/favicon-32x32.png" />{" "}
-				{/* Adjust as needed */}
-				<meta
-					property="og:url"
-					content="https://urbanflavour.codewithash.blog/about"
-				/>
-				<meta name="twitter:card" content="summary_large_image" />
-			</Head>
 			<div className="max-w-3xl mx-auto p-6">
 				<h1 className="text-4xl font-bold mb-4">About Us</h1>
 				<p className="text-lg mb-6">
@@ -87,10 +66,25 @@ const About = () => {
 		</>
 	);
 };
-export function generateMetadata({params}){
-	return{
-		title:'About - Urban Flavour'
-	}
+export function generateMetadata() {
+	return {
+		title: "About Us - Urban Flavour",
+		description: "Learn more about Urban Flavour, our story, and our mission.",
+		openGraph: {
+			title: "About Us - Urban Flavour",
+			description:
+				"Learn more about Urban Flavour, our story, and our mission.",
+			url: `${process.env.NEXT_PUBLIC_HOST_URL}/about-us`,
+			images: [
+				{
+					url: "/images/about-us.jpg",
+					width: 800,
+					height: 600,
+					alt: "About Us Image",
+				},
+			],
+		},
+	};
 }
 
 export default About;

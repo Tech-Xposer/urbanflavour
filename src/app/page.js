@@ -1,4 +1,5 @@
 "use client";
+import 'animate.css';
 
 import Image from "next/image";
 import Link from "next/link";
@@ -6,10 +7,9 @@ import { useContext, useEffect, useState } from "react";
 
 import Accordion from "../components/Accordion";
 
-import img from "../assets/Recipe book-pana.png";
+import img from "../assets/recipe-book.png";
 import bg from "../assets/Recipe book-bro.png";
 import RecipeCard from "@/components/RecipeCard";
-import Head from "next/head";
 
 export default function Home() {
 
@@ -35,25 +35,7 @@ export default function Home() {
 
 	return (
 		<>
-			<Head>
-				<title>Urban Flavour - Home</title>
-				<meta
-					name="description"
-					content="Welcome to Urban Flavour, your go-to source for delicious and diverse food recipes."
-				/>
-				<meta property="og:title" content="Urban Flavour - Home" />
-				<meta
-					property="og:description"
-					content="Welcome to Urban Flavour, your go-to source for delicious and diverse food recipes."
-				/>
-				<meta property="og:image" content="/favicon-32x32.png" />
-				{/* Adjust as needed */}
-				<meta
-					property="og:url"
-					content="https://urbanflavour.codewithash.blog"
-				/>
-				<meta name="twitter:card" content="summary_large_image" />
-			</Head>
+		
 			<div className="bg-amber-50 min-h-screen flex flex-col items-center py-12 px-4 sm:px-6 lg:px-8">
 				<div className="max-w-7xl mx-auto flex flex-col lg:flex-row items-center lg:gap-24">
 					<Image

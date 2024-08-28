@@ -10,8 +10,6 @@ const RecipeCard = ({ recipe, rating }) => {
 		<Star key={index} color={index < rating ? "#ffbb00" : "#e4e5e9"} />
 	));
 
-	// Construct image URL
-	const imageUrl = `${process.env.NEXT_PUBLIC_HOST_URL}/uploads/${recipe.imageUrl}`;
 
 	return (
 		<div className="flex flex-col max-w-md mx-auto bg-white shadow-lg rounded-lg overflow-hidden group w-[500px]">
@@ -19,7 +17,7 @@ const RecipeCard = ({ recipe, rating }) => {
 				<div className=" flex relative w-full items-center justify-center">
 					<div className="relative overflow-hidden  rounded-xl mt-5">
 						<img
-							src={imageUrl || "/default-image.jpg"}
+							src={recipe?.imageUrl || "/default-image.jpg"}
 							alt={recipe?.title || "Recipe Image"}
 							className="transition duration-300 ease-in-out hover:scale-110 w-[400px]  h-[250px] bg-center rounded-xl "
 						/>

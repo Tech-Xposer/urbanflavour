@@ -3,12 +3,11 @@ const nextConfig = {
 	images: {
 		remotePatterns: [
 			{
-				protocol: 'http',
-				hostname: 'localhost',
-				port: '8001', // optional
-				pathname: '/uploads/**',
+				protocol: "https",
+				hostname: "res.cloudinary.com",
+				port: "",
+				pathname: "/dtsl8qkpd/image/upload/**",
 			},
-			
 		],
 	},
 
@@ -16,7 +15,7 @@ const nextConfig = {
 		return [
 			{
 				source: "/api/:path*",
-				destination: "http://localhost:8001/api/:path*", // Proxy to Backend
+				destination: "https://urban-flavour.onrender.com/api/:path*",
 			},
 		];
 	},

@@ -9,29 +9,52 @@ import {
 	UsersRound,
 	Settings2,
 } from "lucide-react";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import loginContext from "@/hooks/login.context";
 import Link from "next/link";
 import logo from "../assets/logo-lg.png";
 import Image from "next/image";
 
-const SidebarContext = createContext();
+export const SidebarContext = createContext();
 
 export default function Sidebar({ children }) {
 	const currentPath = usePathname();
-	const [expanded, setExpanded] = useState(true);
 	const [showUserMenu, setShowUserMenu] = useState(false);
-
+	const [userInitials, setUserInitials] = useState("");
 	const router = useRouter();
-	const { user } = useContext(loginContext);
-	const userInitials = user?.name
-		? user.name
-				.split(" ")
-				.map((name) => name[0].toUpperCase())
-				.filter((_, index, arr) => index === 0 || index === arr.length - 1)
-				.join("")
-		: "";
+
+	const { user, setUser, setIsUserLoggedIn } = useContext(loginContext);
+
+	const { expanded, setExpanded } = useContext(SidebarContext);
+
+	const handleLogoutUser = async () => {
+		const response = await fetch("/api/v1/auth/logout", {
+			method: "POST",
+			headers: {
+				"Content-Type": "application/json",
+			},
+			credentials: "include",
+		});
+		if (response.status === 200) {
+			setUser(null);
+			setIsUserLoggedIn(false);
+			router.push("/");
+		}
+	};
+
+	useEffect(() => {
+		setUserInitials(() =>
+			user?.name
+				? user.name
+						.split(" ")
+						.map((word) => {
+							return word[0].toUpperCase();
+						})
+						.join("")
+				: ""
+		);
+	}, [user]);
 
 	const showMoreDetails = () => {
 		console.log("user pane");
@@ -65,22 +88,11 @@ export default function Sidebar({ children }) {
 		},
 	];
 
-	const handleLogoutUser = async () => {
-		const response = await fetch("/api/v1/auth/logout", {
-			method: "POST",
-			headers: {
-				"Content-Type": "application/json",
-				authorization: `Bearer ${localStorage.getItem("refreshToken")}`,
-			},
-			credentials: "include",
-		});
-		if (response.status === 200) {
-			router.push("/");
-		}
-	};
+
 
 	return (
-		<aside className="h-screen">
+		<aside
+			className={`h-screen fixed transition-all ${expanded ? "w-64" : "w-20"}`}>
 			<nav className="h-full flex flex-col bg-white border-r shadow-2xl rounded-r-2xl">
 				<div className="p-4 pb-2 flex justify-between items-center">
 					<Image
@@ -97,20 +109,18 @@ export default function Sidebar({ children }) {
 					</button>
 				</div>
 
-				<SidebarContext.Provider value={{ expanded }}>
-					<ul className="flex-1 px-3">
-						{navLinks.map((link, index) => (
-							<Link href={link.link} key={index}>
-								<SidebarItem
-									icon={link.icon}
-									text={link.name}
-									active={currentPath === link.link}
-								/>
-							</Link>
-						))}
-						{children}
-					</ul>
-				</SidebarContext.Provider>
+				<ul className="flex-1 px-3">
+					{navLinks.map((link, index) => (
+						<Link href={link.link} key={index}>
+							<SidebarItem
+								icon={link.icon}
+								text={link.name}
+								active={currentPath === link.link}
+							/>
+						</Link>
+					))}
+					{children}
+				</ul>
 
 				<div className="border-t flex p-3 items-center justify-center">
 					<span className=" rounded-md bg-[#c7d2fe]  p-2">{userInitials}</span>
@@ -119,8 +129,8 @@ export default function Sidebar({ children }) {
 							expanded ? "w-52 ml-3" : "w-0"
 						}`}>
 						<div className="leading-4">
-							<h4 className="font-semibold">{user.name}</h4>
-							<span className="text-xs text-gray-600">{user.email}</span>
+							<h4 className="font-semibold">{user?.name}</h4>
+							<span className="text-xs text-gray-600">{user?.email}</span>
 						</div>
 						<MoreVertical
 							size={20}
@@ -129,11 +139,15 @@ export default function Sidebar({ children }) {
 						/>
 					</div>
 					{showUserMenu && (
-						<div className="absolute bottom-12 left-0 bg-gray-100 shadow-lg rounded-md p-3 w-48">
+						<div className="absolute bottom-10 right-0 mt-2 w-20 bg-gray-300 border rounded-md shadow-lg z-10 text-start">
 							<button
 								onClick={handleLogoutUser}
-								className="w-full text-right px-2 py-1 hover:bg-gray-100 rounded-md">
+								className="w-full  px-2 py-1 hover:bg-gray-100 rounded-md">
 								Logout
+							</button>
+							<button
+								className="w-full  px-2 py-1 hover:bg-gray-100 rounded-md">
+								Edit
 							</button>
 						</div>
 					)}
@@ -177,5 +191,3 @@ function SidebarItem({ icon, text, active, alert }) {
 		</li>
 	);
 }
-
-//#C7D2FE
