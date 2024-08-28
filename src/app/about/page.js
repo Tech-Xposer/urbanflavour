@@ -7,7 +7,7 @@ const About = () => {
 					Welcome to <strong>Urban Flavour</strong>!
 				</p>
 				<p className="text-lg mb-6">
-					At Urban Flavour, we're passionate about bringing you a diverse range
+					At Urban Flavour, we&apos;re passionate about bringing you a diverse range
 					of food recipes that cater to every taste and occasion. Our mission is
 					to inspire and empower home cooks of all skill levels to create
 					delicious, memorable meals in their own kitchens.
@@ -18,7 +18,7 @@ const About = () => {
 					experts, and recipe developers dedicated to celebrating the art of
 					cooking. Our team is driven by a shared love for food and a commitment
 					to making cooking accessible and enjoyable for everyone. Whether
-					you're a seasoned chef or a curious beginner, we're here to guide you
+					you&apos;re a seasoned chef or a curious beginner, we&apos;re here to guide you
 					on your culinary journey.
 				</p>
 				<h2 className="text-2xl font-semibold mt-8 mb-4">What We Offer</h2>
@@ -52,7 +52,7 @@ const About = () => {
 				<h2 className="text-2xl font-semibold mt-8 mb-4">Our Commitment</h2>
 				<p className="text-lg mb-6">
 					At Urban Flavour, we believe that cooking should be fun, creative, and
-					rewarding. We're committed to providing high-quality content,
+					rewarding. We&apos;re committed to providing high-quality content,
 					fostering a supportive community, and continuously improving our
 					platform based on your feedback. Your satisfaction and success in the
 					kitchen are our top priorities.
