@@ -1,5 +1,5 @@
 "use client";
-import SideBar, { SidebarContext } from "@/components/sideBar";
+import SideBar, { SidebarContext } from "@/components/Sidebar";
 import { useState } from "react";
 
 const DashboardLayout = ({ children }) => {
